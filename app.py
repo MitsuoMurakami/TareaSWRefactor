@@ -14,21 +14,20 @@ def imprimir_cantidad_votos_x_candidato(votosxcandidato, candidato):
     print()
 
 def imprimir_candidato_ganador(ordenado, cantidad_votos_validos): # requisito 1, 2 y 3
-    # print(ordenado[0][1])
-    # print(ordenado[0][1][1])
-    # print(ordenado[0][1])
-    # print(ordenado[1][1])
+    '''
+     Método de refactorización: simplificación de condicionales. (comienza por el caso más simple y luego se agregan condiciones adicionales)
+    '''
     if cantidad_votos_validos == 0: # no hay votos validos
-        # print(1)
+        print("No hay votos validos")
         return []
     elif ordenado[0][1][1] > cantidad_votos_validos/2: # 1. hay un candidato con >50% de votos validos
-        # print(2)
+        print("solo un candidato con >50'%' de votos validos")
         return [ordenado[0][1]]
     elif ordenado[0][1][1] == ordenado[1][1][1] & ordenado[0][1][1] == cantidad_votos_validos/2:  # 3. hay empate
-        # print(3)
+        print("empate")
         return [ordenado[0][1]]
     else:
-        # print(4)
+        print("no hay un candidato con >50'%' de votos validos")
         return [ordenado[0][1], ordenado[1][1]] # 2. no hay un candidato con >50% de votos validos
     
 
@@ -68,90 +67,102 @@ class CalculaGanador:
         ordenado = ordenar_por_cantidad_votos(votosxcandidato)
         # print("->>>>", ordenado)
         # print(ordenado[1][1][1])
-
+        '''
+        Método de refactorización: extraer método (se extrae el método imprimir_cantidad_votos_x_candidato para mejorar la legibilidad del código)
+        '''
         imprimir_cantidad_votos_x_candidato(votosxcandidato, ordenado[0][0])
 
         return imprimir_candidato_ganador(ordenado, cantidad_votos_validos)
 
 
+# Ejecución
 
 c = CalculaGanador()
 print(c.calcularganador(c.leerdatos()))
 print()
-datatest = [
-['Áncash', 'Asunción', 'Acochaca', '40810062', 'Eddie Hinesley', '0'], # No Valido
-['Áncash', 'Asunción', 'Acochaca', '57533597', 'Eddie Hinesley', '1'], # Valido
-['Áncash', 'Asunción', 'Acochaca', '86777322', 'Aundrea Grace', '1'], # Valido
-['Áncash', 'Asunción', 'Acochaca', '23017965', 'Aundrea Grace', '1'] # Valido
-]
-print(c.calcularganador(datatest))
-print()
 
-# Test 1 Retornar el candidato con mayor cantidad de votos validos >50%
-print("Test 1 Retornar el candidato con mayor cantidad de votos validos >50% -------------------------------------------------")
-datatest = [
-['Áncash', 'Asunción', 'Acochaca', '40810062', 'Eddie Hinesley', '1'], # Valido
-['Áncash', 'Asunción', 'Acochaca', '57533597', 'Eddie Hinesley', '1'], # Valido
-['Áncash', 'Asunción', 'Acochaca', '86777322', 'Aundrea Grace', '1'], # Valido
-['Áncash', 'Asunción', 'Acochaca', '23017965', 'Aundrea Grace', '1'], # Valido
-['Áncash', 'Asunción', 'Acochaca', '23017966', 'Aundrea Grace', '1'] # Valido
-]
-print(c.calcularganador(datatest))
-print("Respuesta esperada: [['Aundrea Grace', 3]]")
-print()
+# Pruebas unitarias
+print("--------------------")
+print("Pruebas unitarias:")
 
-# Test 2 Retornar los dos candidatos con mayor cantidad de votos validos <50%
-print("Test 2 Retornar los dos candidatos con mayor cantidad de votos validos <50% -------------------------------------------------")
+# Prueba 1: Ejemplo básico
+print("Prueba 1: Ejemplo básico")
 datatest = [
-['Áncash', 'Asunción', 'Acochaca', '10810062', 'Rafael Lopez', '1'], # Valido
-['Áncash', 'Asunción', 'Acochaca', '17533597', 'Rafael Lopez', '1'], # Valido
-['Áncash', 'Asunción', 'Acochaca', '10810063', 'Rafael Lopez', '1'], # Valido
-['Áncash', 'Asunción', 'Acochaca', '17533598', 'Rafael Lopez', '0'], # No Valido
-['Áncash', 'Asunción', 'Acochaca', '40810062', 'Eddie Hinesley', '1'], # Valido
-['Áncash', 'Asunción', 'Acochaca', '57533597', 'Eddie Hinesley', '1'], # Valido
-['Áncash', 'Asunción', 'Acochaca', '40810063', 'Eddie Hinesley', '1'], # Valido
-['Áncash', 'Asunción', 'Acochaca', '57533598', 'Eddie Hinesley', '1'], # Valido
-['Áncash', 'Asunción', 'Acochaca', '86777322', 'Aundrea Grace', '1'], # Valido
-['Áncash', 'Asunción', 'Acochaca', '23017965', 'Aundrea Grace', '1'], # Valido
-['Áncash', 'Asunción', 'Acochaca', '86777323', 'Aundrea Grace', '1'], # Valido
-['Áncash', 'Asunción', 'Acochaca', '23017966', 'Aundrea Grace', '1'] # Valido
+    ['Áncash', 'Asunción', 'Acochaca', '40810062', 'Eddie Hinesley', '0'],
+    ['Áncash', 'Asunción', 'Acochaca', '57533597', 'Eddie Hinesley', '1'],
+    ['Áncash', 'Asunción', 'Acochaca', '86777322', 'Aundrea Grace', '1'],
+    ['Áncash', 'Asunción', 'Acochaca', '23017965', 'Aundrea Grace', '1']
 ]
-print(c.calcularganador(datatest))
-print("Respuesta esperada: [['Eddie Hinesley', 4], ['Aundrea Grace', 4]]")
-print()
+assert c.calcularganador(datatest) == [['Aundrea Grace', 2]]
 
-# Test 3 Retornar el candidato que aparece primero en el archivo
-print("Test 3 Retornar el candidato que aparece primero en el archivo -------------------------------------------------")
-datatest = [
-['Áncash', 'Asunción', 'Acochaca', '40810062', 'Eddie Hinesley', '1'], # Valido
-['Áncash', 'Asunción', 'Acochaca', '57533597', 'Eddie Hinesley', '1'], # Valido
-['Áncash', 'Asunción', 'Acochaca', '86777322', 'Aundrea Grace', '1'], # Valido
-['Áncash', 'Asunción', 'Acochaca', '23017965', 'Aundrea Grace', '1'] # Valido
-]
-print(c.calcularganador(datatest))
-print("Respuesta esperada: [['Eddie Hinesley', 2]]")
-print()
+print("---")
 
-# Test 3.1 Retornar el candidato que aparece primero en el archivo
-print("Test 3.1 Retornar el candidato que aparece primero en el archivo -------------------------------------------------")
-datatest = [
-['Áncash', 'Asunción', 'Acochaca', '86777322', 'Aundrea Grace', '1'], # Valido
-['Áncash', 'Asunción', 'Acochaca', '23017965', 'Aundrea Grace', '1'], # Valido
-['Áncash', 'Asunción', 'Acochaca', '40810062', 'Eddie Hinesley', '1'], # Valido
-['Áncash', 'Asunción', 'Acochaca', '57533597', 'Eddie Hinesley', '1'] # Valido
-]
-print(c.calcularganador(datatest))
-print("Respuesta esperada: [['Aundrea Grace', 2]]")
-print()
+# Test 1: Retornar el candidato con mayor cantidad de votos válidos >50%
+print("Test 1: Retornar el candidato con mayor cantidad de votos válidos >50%")
 
-# Test 4 Verificar que el DNI sea valido
-print("Test 4 Verificar que el DNI sea valido -------------------------------------------------")
 datatest = [
-['Áncash', 'Asunción', 'Acochaca', '40810062', 'Eddie Hinesley', '0'], # No Valido
-['Áncash', 'Asunción', 'Acochaca', '575335', 'Eddie Hinesley', '1'], # No Valido
-['Áncash', 'Asunción', 'Acochaca', '86777322', 'Aundrea Grace', '1'], # Valido
-['Áncash', 'Asunción', 'Acochaca', '230179', 'Aundrea Grace', '1'] # No Valido
+    ['Áncash', 'Asunción', 'Acochaca', '40810062', 'Eddie Hinesley', '1'],
+    ['Áncash', 'Asunción', 'Acochaca', '57533597', 'Eddie Hinesley', '1'],
+    ['Áncash', 'Asunción', 'Acochaca', '86777322', 'Aundrea Grace', '1'],
+    ['Áncash', 'Asunción', 'Acochaca', '23017965', 'Aundrea Grace', '1'],
+    ['Áncash', 'Asunción', 'Acochaca', '23017966', 'Aundrea Grace', '1']
 ]
-print(c.calcularganador(datatest))
-print("Respuesta esperada: [['Aundrea Grace', 1]]")
+assert c.calcularganador(datatest) == [['Aundrea Grace', 3]]
+
+print("---")
+
+# Test 2: Retornar los dos candidatos con mayor cantidad de votos válidos <50%
+print("Test 2: Retornar los dos candidatos con mayor cantidad de votos válidos <50%")
+
+datatest = [
+    ['Áncash', 'Asunción', 'Acochaca', '10810062', 'Rafael Lopez', '1'],
+    ['Áncash', 'Asunción', 'Acochaca', '17533597', 'Rafael Lopez', '1'],
+    ['Áncash', 'Asunción', 'Acochaca', '10810063', 'Rafael Lopez', '1'],
+    ['Áncash', 'Asunción', 'Acochaca', '17533598', 'Rafael Lopez', '0'],
+    ['Áncash', 'Asunción', 'Acochaca', '40810062', 'Eddie Hinesley', '1'],
+    ['Áncash', 'Asunción', 'Acochaca', '57533597', 'Eddie Hinesley', '1'],
+    ['Áncash', 'Asunción', 'Acochaca', '40810063', 'Eddie Hinesley', '1'],
+    ['Áncash', 'Asunción', 'Acochaca', '57533598', 'Eddie Hinesley', '1'],
+    ['Áncash', 'Asunción', 'Acochaca', '86777322', 'Aundrea Grace', '1'],
+    ['Áncash', 'Asunción', 'Acochaca', '23017965', 'Aundrea Grace', '1'],
+    ['Áncash', 'Asunción', 'Acochaca', '86777323', 'Aundrea Grace', '1'],
+    ['Áncash', 'Asunción', 'Acochaca', '23017966', 'Aundrea Grace', '1']
+]
+assert c.calcularganador(datatest) == [['Eddie Hinesley', 4], ['Aundrea Grace', 4]]
+
+print("---")
+
+# Test 3: Retornar el candidato que aparece primero en el archivo
+print("Test 3: Retornar el candidato que aparece primero en el archivo")
+
+datatest = [
+    ['Áncash', 'Asunción', 'Acochaca', '40810062', 'Eddie Hinesley', '1'],
+    ['Áncash', 'Asunción', 'Acochaca', '57533597', 'Eddie Hinesley', '1'],
+    ['Áncash', 'Asunción', 'Acochaca', '86777322', 'Aundrea Grace', '1'],
+    ['Áncash', 'Asunción', 'Acochaca', '23017965', 'Aundrea Grace', '1']
+]
+assert c.calcularganador(datatest) == [['Eddie Hinesley', 2]]
+
+print("---")
+
+# Test 3.1: Retornar el candidato que aparece primero en el archivo
+print("Test 3.1: Retornar el candidato que aparece primero en el archivo")
+
+datatest = [
+    ['Áncash', 'Asunción', 'Acochaca', '86777322', 'Aundrea Grace', '1'],
+    ['Áncash', 'Asunción', 'Acochaca', '23017965', 'Aundrea Grace', '1'],
+    ['Áncash', 'Asunción', 'Acochaca', '40810062', 'Eddie Hinesley', '1'],
+    ['Áncash', 'Asunción', 'Acochaca', '57533597', 'Eddie Hinesley', '1']
+]
+assert c.calcularganador(datatest) == [['Aundrea Grace', 2]]
+
+print("---")
+
+# Test 4: Verificar que el DNI sea válido
+print("Test 4: Verificar que el DNI sea válido")
+
+assert validar_dni('40810062') == True
+assert validar_dni('4081006') == False
+
 print()
+print("¡Todos los tests pasaron correctamente!")
